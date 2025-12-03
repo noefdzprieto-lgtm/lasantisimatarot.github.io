@@ -1,326 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>La Santísima Tarot — Acortador</title>
-<link rel="icon" href="data:,">
 <style>
-  /* ===== Body & Theme ===== */
-  :root{
-    --bg1:#0f0b14;
-    --bg2:#2b0a2a;
-    --card:#0f0f12cc;
-    --gold:#d4af37;
-    --accent:#9be7d3;
-    --glass: rgba(255,255,255,0.04);
-  }
-  html,body{height:100%;margin:0;font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
-  body{
-    background: radial-gradient(ellipse at top left, rgba(29,5,28,0.85) 0%, rgba(11,4,12,0.95) 50%), linear-gradient(135deg,var(--bg2) 0%, var(--bg1) 100%);
-    color:#eee;
-    display:flex;align-items:center;justify-content:center;padding:28px;
-    background-attachment: fixed;
-  }
-
-  /* ===== Container Card ===== */
-  .card{
-    width: 420px;
-    max-width: calc(100% - 40px);
-    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-    border: 1px solid rgba(212,175,55,0.06);
-    backdrop-filter: blur(6px) saturate(120%);
-  }
-
-  header{display:flex;gap:12px;align-items:center;margin-bottom:8px}
-  .logo{
-    width:64px;height:64px;border-radius:12px;
-    background: linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.06));
-    display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,175,55,0.12);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-  }
-  .logo .sigil{
-    font-size:28px;color:var(--gold);font-weight:700;letter-spacing:1px;
-  }
-  h1{font-size:18px;margin:0;color:var(--gold);text-shadow:0 1px 0 rgba(0,0,0,0.6)}
-  p.lead{margin:0;color:#d8d6d8;font-size:13px;opacity:0.95}
-
-  /* ===== Form ===== */
-  .form{margin-top:14px;display:grid;gap:10px}
-  label{font-size:12px;color:#d6cfa9;letter-spacing:0.4px}
-  input[type="text"], textarea{
-    width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
-    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
-    color:#fff;font-size:14px;outline:none;
-  }
-  textarea{resize:vertical;height:60px}
-
-  .row{display:flex;gap:10px}
-  .btn{
-    background: linear-gradient(180deg,var(--gold), #b88a2a);
-    color:#111;padding:10px 12px;border-radius:10px;border:none;font-weight:700;cursor:pointer;
-    box-shadow:0 6px 18px rgba(181,134,38,0.12);
-  }
-  .btn.alt{background: linear-gradient(180deg,#03a9f4,#0288d1); color:#000}
-  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#ffd; font-weight:600}
-
-  /* ===== Result area ===== */
-  .result{margin-top:12px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));border:1px solid rgba(255,255,255,0.02)}
-  .shortline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .shortbox{flex:1;padding:8px 10px;background:var(--glass);border-radius:8px;font-size:13px;color:#fff;word-break:break-all;border:1px solid rgba(255,255,255,0.03)}
-  .actions{display:flex;gap:8px}
-  .small{padding:8px 10px;font-size:13px;border-radius:8px}
-
-  /* ===== List ===== */
-  .list{margin-top:14px;max-height:140px;overflow:auto;padding-right:6px}
-  .item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid rgba(255,255,255,0.02)}
-  .item a{color:var(--accent);text-decoration:none}
-  .meta{font-size:12px;color:#d7d7d7;opacity:0.9}
-
-  /* ===== Footer small ===== */
-  .hint{font-size:12px;color:#d0cbb0;margin-top:10px}
-
-  /* Responsive */
-  @media(max-width:420px){
-    .row{flex-direction:column}
-    header{gap:10px}
-  }
+:root{--gold:#d4af37;--bg1:#0f0b14;--glass:rgba(255,255,255,0.03)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial;background:
+linear-gradient(135deg,#2b0a2a 0%,#0f0b14 100%);color:#f3efe6;display:flex;align-items:center;justify-content:center;height:100vh;padding:20px}
+.card{width:420px;max-width:100%;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.12));
+border-radius:14px;padding:20px;border:1px solid rgba(212,175,55,0.06);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+.header{display:flex;gap:12px;align-items:center}
+.logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,rgba(212,175,55,0.14),rgba(212,175,55,0.06));display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:700;font-size:24px}
+h1{margin:0;color:var(--gold);font-size:18px}
+.lead{margin:0;font-size:13px;color:#dcd6c7}
+.form{margin-top:14px;display:grid;gap:10px}
+input,textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.01);color:#fff}
+textarea{resize:vertical;height:70px}
+.row{display:flex;gap:8px}
+.btn{flex:1;padding:10px;border-radius:8px;border:none;background:var(--gold);color:#111;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#ffd}
+.result{margin-top:12px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);display:none}
+.short{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.shortbox{flex:1;background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:8px;font-size:13px;word-break:break-all}
+.actions{display:flex;gap:8px}
+.small{padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+.small.copy{background:#ffeb3b}
+.small.open{background:#03a9f4}
+.list{margin-top:12px;max-height:120px;overflow:auto;padding-right:6px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid rgba(255,255,255,0.02)}
+.meta{font-size:12px;color:#d7d7d7}
+.hint{font-size:12px;color:#d0cbb0;margin-top:10px}
 </style>
 </head>
 <body>
-
-<div class="card" role="main" aria-labelledby="title">
-  <header>
-    <div class="logo" aria-hidden="true"><div class="sigil">☥</div></div>
+<div class="card" role="main">
+  <div class="header">
+    <div class="logo">☥</div>
     <div>
-      <h1 id="title">La Santísima Tarot</h1>
-      <p class="lead">Acorta enlaces y crea accesos directos para tus consultas por WhatsApp</p>
+      <h1>La Santísima Tarot</h1>
+      <p class="lead">Acortador de enlaces — genera accesos directos a WhatsApp</p>
     </div>
-  </header>
+  </div>
 
-  <form id="form" class="form" onsubmit="return false;">
-    <div>
-      <label for="alias">Alias personalizado (ej: consulta)</label>
-      <input id="alias" type="text" placeholder="tarot-consulta" autocomplete="off" />
-    </div>
-
-    <div>
-      <label for="msg">Mensaje inicial (se inserta en WhatsApp)</label>
-      <textarea id="msg" placeholder="Hola, quisiera agendar una consulta..." ></textarea>
-    </div>
-
-    <div>
-      <label for="number">Número de WhatsApp (solo dígitos, sin +)</label>
-      <input id="number" type="text" value="2231164369" />
-    </div>
-
+  <div class="form">
+    <input id="alias" placeholder="Alias (ej: consulta)" />
+    <textarea id="message" placeholder="Mensaje inicial para WhatsApp (opcional)"></textarea>
+    <input id="number" value="2231164369" placeholder="Número WhatsApp (solo dígitos)" />
     <div class="row">
-      <button id="createBtn" class="btn" type="button">Crear enlace</button>
-      <button id="clearBtn" class="btn ghost" type="button">Limpiar</button>
+      <button id="create" class="btn">Crear enlace</button>
+      <button id="clear" class="btn ghost">Limpiar</button>
     </div>
-  </form>
+  </div>
 
-  <div id="resultArea" class="result" style="display:none" aria-live="polite">
-    <div class="shortline">
-      <div class="shortbox" id="finalLink" title="Enlace acortado"></div>
+  <div id="result" class="result" aria-live="polite">
+    <div class="short">
+      <div id="shortbox" class="shortbox"></div>
       <div class="actions">
-        <button id="openBtn" class="small btn alt" title="Abrir enlace">Abrir</button>
-        <button id="copyBtn" class="small" title="Copiar enlace">Copiar</button>
-        <button id="delBtn" class="small ghost" title="Eliminar alias">Eliminar</button>
+        <button id="open" class="small open">Abrir</button>
+        <button id="copy" class="small copy">Copiar</button>
+        <button id="delete" class="small ghost">Eliminar</button>
       </div>
     </div>
-    <div class="hint" id="hintText">Enlace listo. Puedes compartirlo donde quieras.</div>
+    <div id="hint" class="hint"></div>
   </div>
 
-  <div class="list" id="listArea" aria-live="polite"></div>
-
-  <div class="hint" style="margin-top:12px">
-    Consejo: para que el enlace final sea exactamente <strong>https://tuusuario.github.io/#/alias</strong>, publica este archivo en un repositorio llamado <code>tuusuario.github.io</code>.
-  </div>
+  <div id="list" class="list"></div>
+  <div class="hint" style="margin-top:8px">Para que el enlace funcione como <strong>https://tuusuario.github.io/#/alias</strong>, sube este archivo a un repo llamado <code>tuusuario.github.io</code>.</div>
 </div>
 
 <script>
-/* =======================
-   UTILIDADES Y LOGICA
-   ======================= */
-
-// Helpers
-const $ = id => document.getElementById(id);
-const sanitizeAlias = a => a.trim().toLowerCase().replace(/[^a-z0-9\-]/g,'').replace(/^\-+|\-+$/g,'');
-
-// Base for final link: uses origin so when subes a user-site it'll be https://tuusuario.github.io
+// BASE limpio (origin solo)
 const BASE = window.location.origin;
 
-// Element refs
-const aliasEl = $('alias'), msgEl = $('msg'), numEl = $('number');
-const createBtn = $('createBtn'), clearBtn = $('clearBtn');
-const resultArea = $('resultArea'), finalLink = $('finalLink'), copyBtn = $('copyBtn'), openBtn = $('openBtn'), delBtn = $('delBtn');
-const listArea = $('listArea'), hintText = $('hintText');
+// refs
+const aliasEl = document.getElementById('alias');
+const msgEl = document.getElementById('message');
+const numEl = document.getElementById('number');
+const createBtn = document.getElementById('create');
+const clearBtn = document.getElementById('clear');
+const result = document.getElementById('result');
+const shortbox = document.getElementById('shortbox');
+const openBtn = document.getElementById('open');
+const copyBtn = document.getElementById('copy');
+const delBtn = document.getElementById('delete');
+const hint = document.getElementById('hint');
+const list = document.getElementById('list');
 
-// Load existing list from localStorage
-function loadList() {
-  listArea.innerHTML = '';
-  const keys = Object.keys(localStorage).filter(k => k.startsWith('short_')).sort();
-  if (!keys.length) {
-    listArea.innerHTML = '<div class="hint">No hay alias creados aún.</div>';
-    return;
-  }
-  keys.forEach(k => {
+function sanitize(a){return String(a||'').trim().toLowerCase().replace(/[^a-z0-9\-]/g,'').replace(/^\-+|\-+$/g,'');}
+function buildWhats(num,msg){
+  const clean = String(num||'').replace(/\D/g,''); if(!clean) return null;
+  const m = encodeURIComponent(String(msg||'').trim());
+  return m ? `https://wa.me/${clean}?text=${m}` : `https://wa.me/${clean}`;
+}
+
+function loadList(){
+  list.innerHTML='';
+  const keys = Object.keys(localStorage).filter(k=>k.startsWith('short_')).sort();
+  if(!keys.length){ list.innerHTML='<div class="hint">No hay alias creados aún.</div>'; return; }
+  keys.forEach(k=>{
     const alias = k.replace('short_','');
-    const url = localStorage.getItem(k);
-    const node = document.createElement('div');
-    node.className = 'item';
-    node.innerHTML = `<div>
-                        <div><a href="${BASE}/#/${alias}" target="_blank">${BASE}/#/${alias}</a></div>
-                        <div class="meta">${escapeHtml(url)}</div>
-                      </div>
-                      <div>
-                        <button class="small" data-what="open" data-alias="${alias}">Abrir</button>
-                        <button class="small" data-what="copy" data-alias="${alias}">Copiar</button>
-                        <button class="small ghost" data-what="delete" data-alias="${alias}">Eliminar</button>
-                      </div>`;
-    listArea.appendChild(node);
+    const target = localStorage.getItem(k);
+    const div = document.createElement('div'); div.className='item';
+    div.innerHTML = `<div><a href="${BASE}/#/${alias}" target="_blank">${BASE}/#/${alias}</a><div class="meta">${target}</div></div>
+      <div>
+        <button data-a="${alias}" data-action="open" class="small">Abrir</button>
+        <button data-a="${alias}" data-action="copy" class="small copy">Copiar</button>
+        <button data-a="${alias}" data-action="del" class="small ghost">Eliminar</button>
+      </div>`;
+    list.appendChild(div);
   });
 }
 
-// Escape short helper
-function escapeHtml(str){
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// Create final target WhatsApp URL
-function buildWhatsUrl(number, message) {
-  const clean = String(number).replace(/\D/g,'');
-  const param = encodeURIComponent(String(message || '').trim());
-  let base = `https://wa.me/${clean}`;
-  if (param) base += `?text=${param}`;
-  return base;
-}
-
-// Create alias
-createBtn.addEventListener('click', () => {
-  let alias = sanitizeAlias(aliasEl.value || '');
-  const number = (numEl.value || '').trim();
+createBtn.addEventListener('click', ()=>{
+  const alias = sanitize(aliasEl.value);
+  const number = numEl.value.trim();
   const message = msgEl.value || '';
-
-  if (!alias) {
-    alert('Escribe un alias válido (letras, números y guiones).');
-    aliasEl.focus();
-    return;
-  }
-  if (!/^[0-9]+$/.test(number)) {
-    alert('Ingresa un número de WhatsApp válido (solo dígitos).');
-    numEl.focus();
-    return;
-  }
-
-  // Prevent duplicate
-  if (localStorage.getItem('short_' + alias)) {
-    alert('Ese alias ya existe. Elige otro distinto.');
-    aliasEl.focus();
-    return;
-  }
-
-  const target = buildWhatsUrl(number, message);
-
-  // Save
-  localStorage.setItem('short_' + alias, target);
-
-  // Show result
+  if(!alias){ alert('Alias inválido.'); aliasEl.focus(); return; }
+  if(!/^[0-9]+$/.test(number)){ alert('Número inválido'); numEl.focus(); return; }
+  if(localStorage.getItem('short_'+alias)){ alert('Alias ya existe'); aliasEl.focus(); return; }
+  const target = buildWhats(number,message);
+  localStorage.setItem('short_'+alias, target);
   const short = `${BASE}/#/${alias}`;
-  finalLink.textContent = short;
-  finalLink.setAttribute('data-short', short);
-  delBtn.setAttribute('data-alias', alias);
+  shortbox.textContent = short;
+  shortbox.setAttribute('data-short', short);
+  result.style.display='block';
+  hint.textContent = `Redirige a: ${target}`;
   openBtn.setAttribute('data-short', short);
   copyBtn.setAttribute('data-short', short);
-  resultArea.style.display = 'block';
-  hintText.textContent = `Redirige a: ${target}`;
-
-  // Refresh list
+  delBtn.setAttribute('data-alias', alias);
   loadList();
-
-  // Clear inputs lightly
-  // aliasEl.value = ''; msgEl.value = '';
 });
 
-// Copy button
-copyBtn.addEventListener('click', () => {
-  const s = copyBtn.getAttribute('data-short') || finalLink.getAttribute('data-short');
-  if (!s) return alert('No hay enlace para copiar');
-  navigator.clipboard.writeText(s).then(()=> {
-    copyBtn.textContent = 'Copiado ✔';
-    setTimeout(()=> copyBtn.textContent = 'Copiar',1500);
-  });
+copyBtn.addEventListener('click', ()=>{
+  const s = copyBtn.getAttribute('data-short') || shortbox.getAttribute('data-short');
+  if(!s) return alert('No hay enlace');
+  navigator.clipboard.writeText(s).then(()=>{ copyBtn.textContent='Copiado ✔'; setTimeout(()=>copyBtn.textContent='Copiar',1500); });
 });
 
-// Open button
-openBtn.addEventListener('click', () => {
-  const s = openBtn.getAttribute('data-short') || finalLink.getAttribute('data-short');
-  if (!s) return alert('No hay enlace para abrir');
-  window.open(s, '_blank');
+openBtn.addEventListener('click', ()=>{
+  const s = openBtn.getAttribute('data-short') || shortbox.getAttribute('data-short');
+  if(!s) return alert('No hay enlace');
+  window.open(s,'_blank');
 });
 
-// Delete alias (from result area)
-delBtn.addEventListener('click', () => {
+delBtn.addEventListener('click', ()=>{
   const a = delBtn.getAttribute('data-alias');
-  if (!a) return;
-  if (!confirm('Eliminar alias "'+a+'"?')) return;
-  localStorage.removeItem('short_' + a);
-  resultArea.style.display = 'none';
+  if(!a) return;
+  if(!confirm('Eliminar alias '+a+'?')) return;
+  localStorage.removeItem('short_'+a);
+  result.style.display='none';
   loadList();
 });
 
-// Clear form
-clearBtn.addEventListener('click', () => {
-  aliasEl.value = ''; msgEl.value = ''; numEl.value = '2231164369';
-  resultArea.style.display = 'none';
+list.addEventListener('click', (ev)=>{
+  const b = ev.target.closest('button'); if(!b) return;
+  const a = b.getAttribute('data-a'); const action = b.getAttribute('data-action');
+  if(action==='open'){ window.open(`${BASE}/#/${a}`,'_blank'); }
+  else if(action==='copy'){ navigator.clipboard.writeText(`${BASE}/#/${a}`); b.textContent='Copiado ✔'; setTimeout(()=>b.textContent='Copiar',1500); }
+  else if(action==='del'){ if(confirm('Eliminar '+a+'?')){ localStorage.removeItem('short_'+a); loadList(); } }
 });
 
-// List area actions (open, copy, delete)
-listArea.addEventListener('click', (ev) => {
-  const btn = ev.target.closest('button');
-  if (!btn) return;
-  const what = btn.getAttribute('data-what');
-  const alias = btn.getAttribute('data-alias');
-  if (!what || !alias) return;
-  if (what === 'open') {
-    const short = `${BASE}/#/${alias}`;
-    window.open(short, '_blank');
-  } else if (what === 'copy') {
-    const short = `${BASE}/#/${alias}`;
-    navigator.clipboard.writeText(short);
-    btn.textContent = 'Copiado ✔';
-    setTimeout(()=> btn.textContent = 'Copiar',1500);
-  } else if (what === 'delete') {
-    if (!confirm('Eliminar alias "'+alias+'"?')) return;
-    localStorage.removeItem('short_' + alias);
-    loadList();
-  }
-});
+clearBtn.addEventListener('click', ()=>{ aliasEl.value=''; msgEl.value=''; numEl.value='2231164369'; result.style.display='none'; });
 
-// Redirect if URL contains hash
-function checkRedirect() {
+function checkRedirect(){
   const h = window.location.hash;
-  if (h && h.startsWith('#/')) {
-    const alias = h.slice(2);
-    const target = localStorage.getItem('short_' + alias);
-    if (target) {
-      // immediate redirect to original
-      window.location.href = target;
-    } else {
-      // not found - optional: show message
-      // (we keep page visible so the visitor can create it)
-      console.warn('Alias no encontrado:', alias);
-    }
-  }
+  if(h && h.startsWith('#/')){ const alias = h.slice(2); const target = localStorage.getItem('short_'+alias); if(target){ window.location.href = target; } }
 }
-
-// Initial load
-loadList();
-checkRedirect();
+loadList(); checkRedirect();
 </script>
 </body>
 </html>
