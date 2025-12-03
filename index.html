@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>La Santísima Tarot — Acortador</title>
+<link rel="icon" href="data:,">
+<style>
+  /* ===== Body & Theme ===== */
+  :root{
+    --bg1:#0f0b14;
+    --bg2:#2b0a2a;
+    --card:#0f0f12cc;
+    --gold:#d4af37;
+    --accent:#9be7d3;
+    --glass: rgba(255,255,255,0.04);
+  }
+  html,body{height:100%;margin:0;font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  body{
+    background: radial-gradient(ellipse at top left, rgba(29,5,28,0.85) 0%, rgba(11,4,12,0.95) 50%), linear-gradient(135deg,var(--bg2) 0%, var(--bg1) 100%);
+    color:#eee;
+    display:flex;align-items:center;justify-content:center;padding:28px;
+    background-attachment: fixed;
+  }
+
+  /* ===== Container Card ===== */
+  .card{
+    width: 420px;
+    max-width: calc(100% - 40px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border: 1px solid rgba(212,175,55,0.06);
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+
+  header{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+  .logo{
+    width:64px;height:64px;border-radius:12px;
+    background: linear-gradient(135deg, rgba(212,175,55,0.12), rgba(212,175,55,0.06));
+    display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,175,55,0.12);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  }
+  .logo .sigil{
+    font-size:28px;color:var(--gold);font-weight:700;letter-spacing:1px;
+  }
+  h1{font-size:18px;margin:0;color:var(--gold);text-shadow:0 1px 0 rgba(0,0,0,0.6)}
+  p.lead{margin:0;color:#d8d6d8;font-size:13px;opacity:0.95}
+
+  /* ===== Form ===== */
+  .form{margin-top:14px;display:grid;gap:10px}
+  label{font-size:12px;color:#d6cfa9;letter-spacing:0.4px}
+  input[type="text"], textarea{
+    width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+    color:#fff;font-size:14px;outline:none;
+  }
+  textarea{resize:vertical;height:60px}
+
+  .row{display:flex;gap:10px}
+  .btn{
+    background: linear-gradient(180deg,var(--gold), #b88a2a);
+    color:#111;padding:10px 12px;border-radius:10px;border:none;font-weight:700;cursor:pointer;
+    box-shadow:0 6px 18px rgba(181,134,38,0.12);
+  }
+  .btn.alt{background: linear-gradient(180deg,#03a9f4,#0288d1); color:#000}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:#ffd; font-weight:600}
+
+  /* ===== Result area ===== */
+  .result{margin-top:12px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));border:1px solid rgba(255,255,255,0.02)}
+  .shortline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .shortbox{flex:1;padding:8px 10px;background:var(--glass);border-radius:8px;font-size:13px;color:#fff;word-break:break-all;border:1px solid rgba(255,255,255,0.03)}
+  .actions{display:flex;gap:8px}
+  .small{padding:8px 10px;font-size:13px;border-radius:8px}
+
+  /* ===== List ===== */
+  .list{margin-top:14px;max-height:140px;overflow:auto;padding-right:6px}
+  .item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid rgba(255,255,255,0.02)}
+  .item a{color:var(--accent);text-decoration:none}
+  .meta{font-size:12px;color:#d7d7d7;opacity:0.9}
+
+  /* ===== Footer small ===== */
+  .hint{font-size:12px;color:#d0cbb0;margin-top:10px}
+
+  /* Responsive */
+  @media(max-width:420px){
+    .row{flex-direction:column}
+    header{gap:10px}
+  }
+</style>
+</head>
+<body>
+
+<div class="card" role="main" aria-labelledby="title">
+  <header>
+    <div class="logo" aria-hidden="true"><div class="sigil">☥</div></div>
+    <div>
+      <h1 id="title">La Santísima Tarot</h1>
+      <p class="lead">Acorta enlaces y crea accesos directos para tus consultas por WhatsApp</p>
+    </div>
+  </header>
+
+  <form id="form" class="form" onsubmit="return false;">
+    <div>
+      <label for="alias">Alias personalizado (ej: consulta)</label>
+      <input id="alias" type="text" placeholder="tarot-consulta" autocomplete="off" />
+    </div>
+
+    <div>
+      <label for="msg">Mensaje inicial (se inserta en WhatsApp)</label>
+      <textarea id="msg" placeholder="Hola, quisiera agendar una consulta..." ></textarea>
+    </div>
+
+    <div>
+      <label for="number">Número de WhatsApp (solo dígitos, sin +)</label>
+      <input id="number" type="text" value="2231164369" />
+    </div>
+
+    <div class="row">
+      <button id="createBtn" class="btn" type="button">Crear enlace</button>
+      <button id="clearBtn" class="btn ghost" type="button">Limpiar</button>
+    </div>
+  </form>
+
+  <div id="resultArea" class="result" style="display:none" aria-live="polite">
+    <div class="shortline">
+      <div class="shortbox" id="finalLink" title="Enlace acortado"></div>
+      <div class="actions">
+        <button id="openBtn" class="small btn alt" title="Abrir enlace">Abrir</button>
+        <button id="copyBtn" class="small" title="Copiar enlace">Copiar</button>
+        <button id="delBtn" class="small ghost" title="Eliminar alias">Eliminar</button>
+      </div>
+    </div>
+    <div class="hint" id="hintText">Enlace listo. Puedes compartirlo donde quieras.</div>
+  </div>
+
+  <div class="list" id="listArea" aria-live="polite"></div>
+
+  <div class="hint" style="margin-top:12px">
+    Consejo: para que el enlace final sea exactamente <strong>https://tuusuario.github.io/#/alias</strong>, publica este archivo en un repositorio llamado <code>tuusuario.github.io</code>.
+  </div>
+</div>
+
+<script>
+/* =======================
+   UTILIDADES Y LOGICA
+   ======================= */
+
+// Helpers
+const $ = id => document.getElementById(id);
+const sanitizeAlias = a => a.trim().toLowerCase().replace(/[^a-z0-9\-]/g,'').replace(/^\-+|\-+$/g,'');
+
+// Base for final link: uses origin so when subes a user-site it'll be https://tuusuario.github.io
+const BASE = window.location.origin;
+
+// Element refs
+const aliasEl = $('alias'), msgEl = $('msg'), numEl = $('number');
+const createBtn = $('createBtn'), clearBtn = $('clearBtn');
+const resultArea = $('resultArea'), finalLink = $('finalLink'), copyBtn = $('copyBtn'), openBtn = $('openBtn'), delBtn = $('delBtn');
+const listArea = $('listArea'), hintText = $('hintText');
+
+// Load existing list from localStorage
+function loadList() {
+  listArea.innerHTML = '';
+  const keys = Object.keys(localStorage).filter(k => k.startsWith('short_')).sort();
+  if (!keys.length) {
+    listArea.innerHTML = '<div class="hint">No hay alias creados aún.</div>';
+    return;
+  }
+  keys.forEach(k => {
+    const alias = k.replace('short_','');
+    const url = localStorage.getItem(k);
+    const node = document.createElement('div');
+    node.className = 'item';
+    node.innerHTML = `<div>
+                        <div><a href="${BASE}/#/${alias}" target="_blank">${BASE}/#/${alias}</a></div>
+                        <div class="meta">${escapeHtml(url)}</div>
+                      </div>
+                      <div>
+                        <button class="small" data-what="open" data-alias="${alias}">Abrir</button>
+                        <button class="small" data-what="copy" data-alias="${alias}">Copiar</button>
+                        <button class="small ghost" data-what="delete" data-alias="${alias}">Eliminar</button>
+                      </div>`;
+    listArea.appendChild(node);
+  });
+}
+
+// Escape short helper
+function escapeHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Create final target WhatsApp URL
+function buildWhatsUrl(number, message) {
+  const clean = String(number).replace(/\D/g,'');
+  const param = encodeURIComponent(String(message || '').trim());
+  let base = `https://wa.me/${clean}`;
+  if (param) base += `?text=${param}`;
+  return base;
+}
+
+// Create alias
+createBtn.addEventListener('click', () => {
+  let alias = sanitizeAlias(aliasEl.value || '');
+  const number = (numEl.value || '').trim();
+  const message = msgEl.value || '';
+
+  if (!alias) {
+    alert('Escribe un alias válido (letras, números y guiones).');
+    aliasEl.focus();
+    return;
+  }
+  if (!/^[0-9]+$/.test(number)) {
+    alert('Ingresa un número de WhatsApp válido (solo dígitos).');
+    numEl.focus();
+    return;
+  }
+
+  // Prevent duplicate
+  if (localStorage.getItem('short_' + alias)) {
+    alert('Ese alias ya existe. Elige otro distinto.');
+    aliasEl.focus();
+    return;
+  }
+
+  const target = buildWhatsUrl(number, message);
+
+  // Save
+  localStorage.setItem('short_' + alias, target);
+
+  // Show result
+  const short = `${BASE}/#/${alias}`;
+  finalLink.textContent = short;
+  finalLink.setAttribute('data-short', short);
+  delBtn.setAttribute('data-alias', alias);
+  openBtn.setAttribute('data-short', short);
+  copyBtn.setAttribute('data-short', short);
+  resultArea.style.display = 'block';
+  hintText.textContent = `Redirige a: ${target}`;
+
+  // Refresh list
+  loadList();
+
+  // Clear inputs lightly
+  // aliasEl.value = ''; msgEl.value = '';
+});
+
+// Copy button
+copyBtn.addEventListener('click', () => {
+  const s = copyBtn.getAttribute('data-short') || finalLink.getAttribute('data-short');
+  if (!s) return alert('No hay enlace para copiar');
+  navigator.clipboard.writeText(s).then(()=> {
+    copyBtn.textContent = 'Copiado ✔';
+    setTimeout(()=> copyBtn.textContent = 'Copiar',1500);
+  });
+});
+
+// Open button
+openBtn.addEventListener('click', () => {
+  const s = openBtn.getAttribute('data-short') || finalLink.getAttribute('data-short');
+  if (!s) return alert('No hay enlace para abrir');
+  window.open(s, '_blank');
+});
+
+// Delete alias (from result area)
+delBtn.addEventListener('click', () => {
+  const a = delBtn.getAttribute('data-alias');
+  if (!a) return;
+  if (!confirm('Eliminar alias "'+a+'"?')) return;
+  localStorage.removeItem('short_' + a);
+  resultArea.style.display = 'none';
+  loadList();
+});
+
+// Clear form
+clearBtn.addEventListener('click', () => {
+  aliasEl.value = ''; msgEl.value = ''; numEl.value = '2231164369';
+  resultArea.style.display = 'none';
+});
+
+// List area actions (open, copy, delete)
+listArea.addEventListener('click', (ev) => {
+  const btn = ev.target.closest('button');
+  if (!btn) return;
+  const what = btn.getAttribute('data-what');
+  const alias = btn.getAttribute('data-alias');
+  if (!what || !alias) return;
+  if (what === 'open') {
+    const short = `${BASE}/#/${alias}`;
+    window.open(short, '_blank');
+  } else if (what === 'copy') {
+    const short = `${BASE}/#/${alias}`;
+    navigator.clipboard.writeText(short);
+    btn.textContent = 'Copiado ✔';
+    setTimeout(()=> btn.textContent = 'Copiar',1500);
+  } else if (what === 'delete') {
+    if (!confirm('Eliminar alias "'+alias+'"?')) return;
+    localStorage.removeItem('short_' + alias);
+    loadList();
+  }
+});
+
+// Redirect if URL contains hash
+function checkRedirect() {
+  const h = window.location.hash;
+  if (h && h.startsWith('#/')) {
+    const alias = h.slice(2);
+    const target = localStorage.getItem('short_' + alias);
+    if (target) {
+      // immediate redirect to original
+      window.location.href = target;
+    } else {
+      // not found - optional: show message
+      // (we keep page visible so the visitor can create it)
+      console.warn('Alias no encontrado:', alias);
+    }
+  }
+}
+
+// Initial load
+loadList();
+checkRedirect();
+</script>
+</body>
+</html>
